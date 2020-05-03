@@ -4,8 +4,6 @@ import random
 
 keyboard = Controller()
 
-startup = 1
-
 
 def get_closest(n, i):
     # Smaller multiple
@@ -41,31 +39,32 @@ def get_duration(min, max, bpm):
     return duration / 1000  # Return it in seconds
 
 
-def delay():
+def startup(t):
     # Give some time to think or get ready, please
-    print("Start in %s seconds..." % (startup))
-    time.sleep(startup)  # Not sure why this is needed
+    print("Start in %s seconds..." % (t))
+    time.sleep(t)
     # This probably is needed to start the sequence in Premiere
     keyboard.press(Key.space)
     keyboard.release(Key.space)
 
 
 def run():
+    startup_time = 1
     current_angle = 1
     amount_of_cameras = 4
     min_duration = 2  # (in seconds)
     max_duration = 4  # (in seconds)
-    bpm = 120  # This will influence the speed of the cuts
+    bpm = 240  # This will influence the speed of the cuts
 
-    delay()  # Initiate startup
-    time.sleep(1)
+    startup(startup_time)  # Initiate startup
+    time.sleep(1)  # Not sure why this is needed
 
     while True:
         angle = get_angle(current_angle, amount_of_cameras)
 
         duration = get_duration(min_duration, max_duration, bpm)
-        # keyboard.press('%s' % angle)
-        # keyboard.release('%s' % angle)
+        keyboard.press('%s' % angle)
+        keyboard.release('%s' % angle)
         print("Cutting to Camera %s, hold %s s" % (angle, duration))
         time.sleep(duration)
         current_angle = angle
